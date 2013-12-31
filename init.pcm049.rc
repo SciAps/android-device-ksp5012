@@ -1,0 +1,135 @@
+import init.pcm049.usb.rc
+import init.pcm049.wifi.rc
+
+on init
+# See storage config details at http://source.android.com/tech/storage/
+    mkdir /mnt/shell/emulated 0700 shell shell
+    mkdir /storage/emulated 0555 root root
+
+    export EXTERNAL_STORAGE /storage/emulated/legacy
+    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
+    export EMULATED_STORAGE_TARGET /storage/emulated
+
+# Support legacy paths
+    symlink /storage/emulated/legacy /sdcard
+    symlink /storage/emulated/legacy /mnt/sdcard
+    symlink /storage/emulated/legacy /storage/sdcard0
+    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+
+# create real external storage
+    export SECONDARY_STORAGE /storage/sdcard1
+    mkdir /storage/sdcard1 0000 system system
+    mkdir /storage/udisk 0000 system system
+
+# Set the processor type for libEGL.  We set this to omap4430 even though we
+# may be running on an omap4460. Since they both have the same SGX, libEGL
+# does not care.
+    setprop ro.product.processor omap4430
+
+on post-fs-data
+        mkdir /data/media 0775 media_rw media_rw
+        chown media_rw media_rw /data/media
+        mkdir /data/misc/wifi 0770 wifi wifi
+        mkdir /data/misc/wifi/sockets 0770 wifi wifi
+        mkdir /data/misc/dhcp 0770 dhcp dhcp
+        chown dhcp dhcp /data/misc/dhcp
+        mkdir /data/misc/eth 0770 system system
+        chown system system /data/misc/eth
+	mkdir /data/misc/camera 0770 media media
+	setprop vold.post_fs_data_done 1
+
+on boot
+	setprop lcd.landscape true
+	mount debugfs /sys/kernel/debug /sys/kernel/debug
+	chmod 0666 /dev/pvrsrvkm
+	chmod 0444 /system/usr/keychars/omap4-keypad.kcm.bin
+	setprop ro.crypto.keyfile.userdata /dev/block/platform/omap/omap_hsmmc.1/by-name/crypto
+
+# cpufreq interactive governor: timer 20ms, min sample 20ms, hispeed 800MHz
+        write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 20000
+        write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 20000
+        write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 800000
+
+# Boost the CPU for 30 secs during boot
+        write /sys/devices/system/cpu/cpufreq/interactive/boost_timeout 30000000
+        write /sys/devices/system/cpu/cpu0/cpufreq/boost_cpufreq 1
+
+# autosuspend root hubs immediatly after attached devices
+        write /sys/bus/usb/devices/usb1/power/autosuspend_delay_ms 0
+        write /sys/bus/usb/devices/usb2/power/autosuspend_delay_ms 0
+
+on fs
+	mkdir /factory 0775 radio radio
+	symlink /dev/block/platform /dev/block/platform/omap
+	mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/system /system wait ro
+        setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
+        mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/userdata /data wait noatime nosuid nodev nomblk_io_submit
+        mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/cache /cache wait noatime nosuid nodev nomblk_io_submit
+        mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/efs /factory wait ro
+        setprop ro.crypto.fuse_sdcard true
+
+# H264 Encoder Profile setting
+# 1 - Base Profile
+# 2 - Main Profile
+# 8 - High Profile
+        setprop video.h264enc.profile 1
+
+# change permissions for ION driver
+    chmod 0777 /dev/ion
+
+# We chown/chmod /factory because mount is run as root + defaults
+        chown radio radio /factory
+        chmod 0775 /factory
+
+# add symlink for HDCP key
+        symlink /factory/hdcp.keys /system/vendor/firmware/hdcp.keys
+
+# Change permissions on the governor (this is for debug only)
+    chmod 444 /proc/cmdline
+
+# change permissions for S3D hardware
+    chown system system /sys/devices/platform/omapdss/display0/s3d_enable
+    chown system system /sys/devices/platform/omapdss/display1/s3d_enable
+    chown system system /sys/devices/platform/omapdss/display1/s3d_type
+
+# If you do not want the device to suspend to RAM, enable this write
+#	write /sys/power/wake_lock init.pcm049.rc_no_suspend
+
+service pvrsrvinit /vendor/bin/pvrsrvinit
+	class core
+	user root
+	group root
+	oneshot
+
+# create filesystems if necessary
+service setup_fs /system/bin/setup_fs \
+                /dev/block/platform/omap/omap_hsmmc.1/by-name/cache \
+                /dev/block/platform/omap/omap_hsmmc.1/by-name/userdata
+        class core
+        user root
+        group root
+        oneshot
+
+# create virtual SD card at /storage/sdcard0, based on the /data/media directory
+# daemon will drop to user/group system/media_rw after initializing
+# underlying files in /data/media will be created with user and group media_rw (1023)
+service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
+    class main
+
+service dhcpcd_eth0 /system/bin/dhcpcd -ABDKL
+        class main
+        disabled
+        oneshot
+
+# Texas Instruments Shared Memory Service
+service shm_service /system/bin/shm_service --no-fork
+        class core
+        user system
+        group system
+
+# Texas Instruments Augmented Reality X-celerator Daemon
+service arxd /system/bin/arxd
+        class main
+        user system
+        group drmrpc
+        ioprio rt 4

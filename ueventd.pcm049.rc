@@ -1,0 +1,13 @@
+/dev/pvrsrvkm             0666   system     system
+/dev/video0               0660   system     camera
+/dev/video1               0660   system     camera
+/dev/video2               0660   system     camera
+
+#for DSSCOMP
+/dev/dsscomp              0666   system     system
+/dev/tiler                0666   system     system
+
+#for SYSLINK
+/dev/rpmsg-omx0           0666   drmrpc     drmrpc
+/dev/rpmsg-omx1           0666   drmrpc     drmrpc
+/dev/rproc_user           0660   drmrpc     drmrpc

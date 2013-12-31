@@ -1,0 +1,18 @@
+## Vold 2.0 Generic fstab
+## - San Mehat (san@android.com)
+##
+
+#######################
+## Regular device mount
+##
+## Format: dev_mount <label> <mount_point> <part> <sysfs_path1...>
+## label        - Label for the volume
+## mount_point  - Where the volume will be mounted
+## part         - Partition # (1 based), or 'auto' for first usable partition.
+## <sysfs_path> - List of sysfs paths to source devices
+######################
+
+# automount external SD card
+dev_mount sdcard /storage/sdcard1 auto /devices/platform/omap_hsmmc.0/mmc_host/mmc0
+dev_mount usbdisk /storage/udisk auto /devices/platform/usbhs_omap/ehci-omap.0/usb1/1-1/1-1.1
+
