@@ -47,7 +47,7 @@ PRODUCT_PACKAGES += \
         LiveWallpapersPicker \
         MagicSmokeWallpapers \
         VisualizationWallpapers \
-        librs_jni
+        librs_jni \
 
 PRODUCT_PACKAGES += \
     ti_omap4_ducati_bins
@@ -144,7 +144,7 @@ PRODUCT_PACKAGES += \
 DUCATI_TGZ := device/ti/proprietary-open/omap4/ducati_blaze_tablet.tgz
 PRODUCT_PACKAGES += ducati-m3-core0.xem3
 
-$(call inherit-product-if-exists, vendor/phytec/pcm049/device-vendor.mk)
+$(call inherit-product-if-exists, vendor/sciaps/device.mk)
 $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 $(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product-if-exists, device/ti/proprietary-open/omap4/ti-omap4-vendor.mk)
