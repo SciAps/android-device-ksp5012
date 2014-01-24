@@ -41,6 +41,9 @@ PRODUCT_COPY_FILES := \
 PRODUCT_COPY_FILES += \
         device/phytec/pcm049/vold.fstab:system/etc/vold.fstab
 
+PRODUCT_PACKAGES += \
+	lights.pcm049
+
 # Live Wallpapers
 PRODUCT_PACKAGES += \
         LiveWallpapers \
