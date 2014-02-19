@@ -31,6 +31,7 @@ PRODUCT_COPY_FILES := \
 	frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
 	frameworks/native/data/etc/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
 	device/phytec/pcm049/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
+	device/phytec/pcm049/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
 	device/phytec/pcm049/omap4-keypad.kl:system/usr/keylayout/omap4-keypad.kl \
 	device/phytec/pcm049/omap4-keypad.kcm:system/usr/keychars/omap4-keypad.kcm \
         device/phytec/pcm049/ft5x06_ts.idc:system/usr/idc/ft5x06_ts.idc \
@@ -133,16 +134,23 @@ PRODUCT_PACKAGES += \
 	TQS_D_1.7_127x.ini \
 	hostapd.conf \
 	wifical.sh \
+	wilink7.sh \
 	calibrator
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
 	make_ext4fs
 
+# to flow down to ti-wpan-products.mk
+BLUETI_ENHANCEMENT := true
+
+# BlueZ a2dp Audio HAL module
+#PRODUCT_PACKAGES += audio.a2dp.default
+
 # BlueZ test tools
-#PRODUCT_PACKAGES += \
-#	hciconfig \
-#	hcitool
+PRODUCT_PACKAGES += \
+	hciconfig \
+	hcitool
 
 DUCATI_TGZ := device/ti/proprietary-open/omap4/ducati_blaze_tablet.tgz
 PRODUCT_PACKAGES += ducati-m3-core0.xem3
@@ -152,6 +160,7 @@ $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 $(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product-if-exists, device/ti/proprietary-open/omap4/ti-omap4-vendor.mk)
 $(call inherit-product-if-exists, vendor/ti/proprietary/omap4/ti-omap4-vendor.mk)
+$(call inherit-product-if-exists, hardware/ti/wpan/ti-wpan-products.mk)
 $(call inherit-product, device/phytec/pcm049/wl12xx/ti-wl12xx-vendor.mk)
 $(call inherit-product-if-exists, device/ti/proprietary-open/wl12xx/wlan/wl12xx-wlan-fw-products.mk)
 #$(call inherit-product-if-exists, device/ti/common-open/s3d/s3d-products.mk)
