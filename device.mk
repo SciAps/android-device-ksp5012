@@ -30,6 +30,7 @@ PRODUCT_COPY_FILES := \
 	frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
 	frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
 	frameworks/native/data/etc/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
+	frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
 	device/phytec/pcm049/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
 	device/phytec/pcm049/omap4-keypad.kl:system/usr/keylayout/omap4-keypad.kl \
 	device/phytec/pcm049/omap4-keypad.kcm:system/usr/keychars/omap4-keypad.kcm \
@@ -43,6 +44,11 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES += \
 	lights.pcm049
+
+#Sensors - Accelerometer
+PRODUCT_PACKAGES += \
+	sensors.pcm049 \
+	sensor.test \
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
