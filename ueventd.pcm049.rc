@@ -11,3 +11,6 @@
 /dev/rpmsg-omx0           0666   drmrpc     drmrpc
 /dev/rpmsg-omx1           0666   drmrpc     drmrpc
 /dev/rproc_user           0660   drmrpc     drmrpc
+
+# for Bluetooth
+/dev/hci_tty		  0666	 bluetooth  bluetooth
