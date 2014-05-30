@@ -14,3 +14,6 @@
 
 # for Bluetooth
 /dev/hci_tty		  0666	 bluetooth  bluetooth
+
+# for GPS
+/dev/ttyO0		  0666	 gps	    system

@@ -33,9 +33,11 @@ PRODUCT_COPY_FILES := \
 	frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
 	device/phytec/pcm049/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
 	device/phytec/pcm049/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
+        device/phytec/pcm049/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
 	device/phytec/pcm049/omap4-keypad.kl:system/usr/keylayout/omap4-keypad.kl \
 	device/phytec/pcm049/omap4-keypad.kcm:system/usr/keychars/omap4-keypad.kcm \
         device/phytec/pcm049/ft5x06_ts.idc:system/usr/idc/ft5x06_ts.idc \
+        device/common/gps/gps.conf_US:system/etc/gps.conf \
         #device/phytec/pcm049/twl6030_pwrbutton.kl:system/usr/keylayout/twl6030_pwrbutton.kl \
 	#device/phytec/pcm049/audio/audio_policy.conf:system/etc/audio_policy.conf \
 
