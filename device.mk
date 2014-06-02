@@ -38,8 +38,8 @@ PRODUCT_COPY_FILES := \
 	device/phytec/pcm049/omap4-keypad.kcm:system/usr/keychars/omap4-keypad.kcm \
         device/phytec/pcm049/ft5x06_ts.idc:system/usr/idc/ft5x06_ts.idc \
         device/common/gps/gps.conf_US:system/etc/gps.conf \
+	device/phytec/pcm049/audio/audio_policy.conf:system/etc/audio_policy.conf \
         #device/phytec/pcm049/twl6030_pwrbutton.kl:system/usr/keylayout/twl6030_pwrbutton.kl \
-	#device/phytec/pcm049/audio/audio_policy.conf:system/etc/audio_policy.conf \
 
 # to mount the external storage (sdcard)
 PRODUCT_COPY_FILES += \
@@ -120,17 +120,18 @@ PRODUCT_PACKAGES += \
 	librs_jni \
 	com.android.future.usb.accessory
 
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
 	audio.primary.pcm049
 
 # tinyalsa utils
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
 	tinymix \
 	tinyplay \
 	tinycap
 
 # Audioout libs
-#PRODUCT_PACKAGES += libaudioutils
+PRODUCT_PACKAGES += \
+	libaudioutils
 
 # Enable AAC 5.1 decode (decoder)
 PRODUCT_PROPERTY_OVERRIDES += \

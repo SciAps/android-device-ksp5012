@@ -175,34 +175,19 @@ static void release_buffer(struct resampler_buffer_provider *buffer_provider,
 
 static void select_devices(struct audio_device *adev)
 {
-    int headphone_on;
     int speaker_on;
-    int docked;
-    int main_mic_on;
 
-    headphone_on = adev->out_device & (AUDIO_DEVICE_OUT_WIRED_HEADSET |
-                                    AUDIO_DEVICE_OUT_WIRED_HEADPHONE);
     speaker_on = adev->out_device & AUDIO_DEVICE_OUT_SPEAKER;
-    docked = adev->out_device & AUDIO_DEVICE_OUT_ANLG_DOCK_HEADSET;
-    main_mic_on = adev->in_device & AUDIO_DEVICE_IN_BUILTIN_MIC;
 
     reset_mixer_state(adev->ar);
 
-ALOGE("speaker_on %d headphone_on %d\n", speaker_on, headphone_on);
+ALOGE("speaker_on %d\n", speaker_on);
     if (speaker_on)
         audio_route_apply_path(adev->ar, "speaker");
-    if (headphone_on)
-        audio_route_apply_path(adev->ar, "headphone");
-    if (docked)
-        audio_route_apply_path(adev->ar, "dock");
-    if (main_mic_on) {
-        audio_route_apply_path(adev->ar, "mic");
-    }
 
     update_mixer_state(adev->ar);
 
-    ALOGV("hp=%c speaker=%c dock=%c main-mic=%c", headphone_on ? 'y' : 'n',
-          speaker_on ? 'y' : 'n', docked ? 'y' : 'n', main_mic_on ? 'y' : 'n');
+    ALOGV("speaker=%c", speaker_on ? 'y' : 'n');
 }
 
 /* must be called with hw device and output stream mutexes locked */
@@ -1252,7 +1237,7 @@ static int adev_open(const hw_module_t* module, const char* name,
     adev->orientation = ORIENTATION_UNDEFINED;
     /* Let the call to out_set_parameters initialize this */
     adev->out_device = AUDIO_DEVICE_NONE;
-    adev->in_device = AUDIO_DEVICE_IN_BUILTIN_MIC & ~AUDIO_DEVICE_BIT_IN;
+    adev->in_device = AUDIO_DEVICE_NONE;
 
     *device = &adev->hw_device.common;
 
@@ -1269,7 +1254,7 @@ struct audio_module HAL_MODULE_INFO_SYM = {
         .module_api_version = AUDIO_MODULE_API_VERSION_0_1,
         .hal_api_version = HARDWARE_HAL_API_VERSION,
         .id = AUDIO_HARDWARE_MODULE_ID,
-        .name = "PCM049 audio HW HAL",
+        .name = "KSP5012 audio HW HAL",
         .author = "The Android Open Source Project",
         .methods = &hal_module_methods,
     },

@@ -1,109 +1,67 @@
 <mixer>
   <!-- These are the initial mixer settings -->
-  <ctl name="PCM Playback Volume" value="127" />
-  <ctl name="Left Line Mixer Line2R Bypass Volume" value="118" />
-  <ctl name="Left Line Mixer PGAR Bypass Volume" value="118" />
-  <ctl name="Left Line Mixer DACR1 Playback Volume" value="118" />
-  <ctl name="Right Line Mixer Line2L Bypass Volume" value="118" />
-  <ctl name="Right Line Mixer PGAL Bypass Volume" value="118" />
-  <ctl name="Right Line Mixer DACL1 Playback Volume" value="118" />
-  <ctl name="Left HP Mixer Line2R Bypass Volume" value="118" />
-  <ctl name="Left HP Mixer PGAR Bypass Volume" value="118" />
-  <ctl name="Left HP Mixer DACR1 Playback Volume" value="118" />
-  <ctl name="Right HP Mixer Line2L Bypass Volume" value="118" />
-  <ctl name="Right HP Mixer PGAL Bypass Volume" value="118" />
-  <ctl name="Right HP Mixer DACL1 Playback Volume" value="118" />
-  <ctl name="Left HPCOM Mixer Line2R Bypass Volume" value="118" />
-  <ctl name="Left HPCOM Mixer PGAR Bypass Volume" value="118" />
-  <ctl name="Left HPCOM Mixer DACR1 Playback Volume" value="118" />
-  <ctl name="Right HPCOM Mixer Line2L Bypass Volume" value="118" />
-  <ctl name="Right HPCOM Mixer PGAL Bypass Volume" value="118" />
-  <ctl name="Right HPCOM Mixer DACL1 Playback Volume" value="118" />
-  <ctl name="Line Line2 Bypass Volume" value="118" />
-  <ctl name="Line PGA Bypass Volume" value="118" />
-  <ctl name="Line DAC Playback Volume" value="118" />
-  <ctl name="HP Line2 Bypass Volume" value="118" />
-  <ctl name="HP PGA Bypass Volume" value="118" />
-  <ctl name="HP DAC Playback Volume" value="118" />
-  <ctl name="HPCOM Line2 Bypass Volume" value="118" />
-  <ctl name="HPCOM PGA Bypass Volume" value="118" />
-  <ctl name="HPCOM DAC Playback Volume" value="118" />
-  <ctl name="Line Playback Switch" value="0" />
-  <ctl name="HP Playback Switch" value="0" />
-  <ctl name="HPCOM Playback Switch" value="0" />
-  <ctl name="AGC Switch" value="0" />
-  <ctl name="PGA Capture Volume" value="98" />
-  <ctl name="PGA Capture Switch" value="1" />
-  <ctl name="ADC HPF Cut-off" value="0" />
-  <ctl name="Class-D Amplifier Gain" value="2" />
-  <ctl name="Right HPCOM Mixer Line2L Bypass Switch" value="0" />
-  <ctl name="Right HPCOM Mixer PGAL Bypass Switch" value="0" />
-  <ctl name="Right HPCOM Mixer DACL1 Switch" value="0" />
-  <ctl name="Right HPCOM Mixer Line2R Bypass Switch" value="0" />
-  <ctl name="Right HPCOM Mixer PGAR Bypass Switch" value="0" />
-  <ctl name="Right HPCOM Mixer DACR1 Switch" value="0" />
-  <ctl name="Left HPCOM Mixer Line2L Bypass Switch" value="0" />
-  <ctl name="Left HPCOM Mixer PGAL Bypass Switch" value="0" />
-  <ctl name="Left HPCOM Mixer DACL1 Switch" value="0" />
-  <ctl name="Left HPCOM Mixer Line2R Bypass Switch" value="0" />
-  <ctl name="Left HPCOM Mixer PGAR Bypass Switch" value="0" />
-  <ctl name="Left HPCOM Mixer DACR1 Switch" value="0" />
-  <ctl name="Right HP Mixer Line2L Bypass Switch" value="0" />
-  <ctl name="Right HP Mixer PGAL Bypass Switch" value="0" />
-  <ctl name="Right HP Mixer DACL1 Switch" value="0" />
-  <ctl name="Right HP Mixer Line2R Bypass Switch" value="0" />
-  <ctl name="Right HP Mixer PGAR Bypass Switch" value="0" />
-  <ctl name="Right HP Mixer DACR1 Switch" value="1" />
-  <ctl name="Left HP Mixer Line2L Bypass Switch" value="0" />
-  <ctl name="Left HP Mixer PGAL Bypass Switch" value="0" />
-  <ctl name="Left HP Mixer DACL1 Switch" value="1" />
-  <ctl name="Left HP Mixer Line2R Bypass Switch" value="0" />
-  <ctl name="Left HP Mixer PGAR Bypass Switch" value="0" />
-  <ctl name="Left HP Mixer DACR1 Switch" value="0" />
-  <ctl name="Right Line Mixer Line2L Bypass Switch" value="0" />
-  <ctl name="Right Line Mixer PGAL Bypass Switch" value="0" />
-  <ctl name="Right Line Mixer DACL1 Switch" value="1" />
-  <ctl name="Right Line Mixer Line2R Bypass Switch" value="0" />
-  <ctl name="Right Line Mixer PGAR Bypass Switch" value="0" />
-  <ctl name="Right Line Mixer DACR1 Switch" value="1" />
-  <ctl name="Left Line Mixer Line2L Bypass Switch" value="0" />
-  <ctl name="Left Line Mixer PGAL Bypass Switch" value="0" />
-  <ctl name="Left Line Mixer DACL1 Switch" value="1" />
-  <ctl name="Left Line Mixer Line2R Bypass Switch" value="0" />
-  <ctl name="Left Line Mixer PGAR Bypass Switch" value="0" />
-  <ctl name="Left Line Mixer DACR1 Switch" value="0" />
-  <ctl name="Right Line2R Mux" value="single-ended" />
-  <ctl name="Right Line1R Mux" value="single-ended" />
-  <ctl name="Right Line1L Mux" value="single-ended" />
-  <ctl name="Right PGA Mixer Line1R Switch" value="1" />
-  <ctl name="Right PGA Mixer Line1L Switch" value="0" />
-  <ctl name="Right PGA Mixer Line2R Switch" value="0" />
-  <ctl name="Right PGA Mixer Mic3L Switch" value="0" />
-  <ctl name="Right PGA Mixer Mic3R Switch" value="0" />
-  <ctl name="Left Line2L Mux" value="single-ended" />
-  <ctl name="Left Line1R Mux" value="single-ended" />
-  <ctl name="Left Line1L Mux" value="single-ended" />
-  <ctl name="Left PGA Mixer Line1L Switch" value="1" />
-  <ctl name="Left PGA Mixer Line1R Switch" value="0" />
-  <ctl name="Left PGA Mixer Line2L Switch" value="0" />
-  <ctl name="Left PGA Mixer Mic3L Switch" value="0" />
-  <ctl name="Left PGA Mixer Mic3R Switch" value="0" />
-  <ctl name="Right HPCOM Mux" value="single-ended" />
-  <ctl name="Right DAC Mux" value="DAC_R1" />
-  <ctl name="Left HPCOM Mux" value="single-ended" />
-  <ctl name="Left DAC Mux" value="DAC_L1" />
+  <ctl name="Digital Loopback Switch" value="0" />
+  <ctl name="DAC Companding" value="0" />
+  <ctl name="ADC Companding" value="0" />
+  <ctl name="Playback De-emphasis" value="0" />
+  <ctl name="DAC Inversion Switch" value="0" />
+  <ctl name="PCM Volume" value="192" />
+  <ctl name="High Pass Filter Switch" value="0" />
+  <ctl name="High Pass Cut Off" value="0" />
+  <ctl name="ADC Inversion Switch" value="0" />
+  <ctl name="Capture Volume" value="0" />
+  <ctl name="Equaliser Function" value="0" />
+  <ctl name="EQ1 Cut Off" value="0" />
+  <ctl name="EQ1 Volume" value="24" />
+  <ctl name="Equaliser EQ2 Bandwith" value="0" />
+  <ctl name="EQ2 Cut Off" value="0" />
+  <ctl name="EQ2 Volume" value="24" />
+  <ctl name="Equaliser EQ3 Bandwith" value="0" />
+  <ctl name="EQ3 Cut Off" value="0" />
+  <ctl name="EQ3 Volume" value="24" />
+  <ctl name="Equaliser EQ4 Bandwith" value="0" />
+  <ctl name="EQ4 Cut Off" value="0" />
+  <ctl name="EQ4 Volume" value="24" />
+  <ctl name="Equaliser EQ5 Bandwith" value="0" />
+  <ctl name="EQ5 Cut Off" value="0" />
+  <ctl name="EQ5 Volume" value="24" />
+  <ctl name="DAC Playback Limiter Switch" value="0" />
+  <ctl name="DAC Playback Limiter Decay" value="0" />
+  <ctl name="DAC Playback Limiter Attack" value="0" />
+  <ctl name="DAC Playback Limiter Threshold" value="0" />
+  <ctl name="DAC Playback Limiter Boost" value="7" />
+  <ctl name="ALC Enable Switch" value="0" />
+  <ctl name="ALC Capture Max Gain" value="0" />
+  <ctl name="ALC Capture Min Gain" value="0" />
+  <ctl name="ALC Capture ZC Switch" value="0" />
+  <ctl name="ALC Capture Hold" value="0" />
+  <ctl name="ALC Capture Target" value="0" />
+  <ctl name="ALC Capture Mode" value="0" />
+  <ctl name="ALC Capture Decay" value="0" />
+  <ctl name="ALC Capture Attack" value="0" />
+  <ctl name="ALC Capture Noise Gate Switch" value="0" />
+  <ctl name="ALC Capture Noise Gate Threshold" value="0" />
+  <ctl name="Capture PGA ZC Switch" value="0" />
+  <ctl name="Capture PGA Volume" value="0" />
+  <ctl name="Speaker Playback ZC Switch" value="0" />
+  <ctl name="Speaker Playback Switch" value="0" />
+  <ctl name="Speaker Playback Volume" value="63" />
+  <ctl name="Aux Mode" value="0" />
+  <ctl name="Capture Boost(+20dB)" value="0" />
+  <ctl name="Mono Playback Switch" value="0" />
+  <ctl name="DAC 128x Oversampling Switch" value="0" />
+  <ctl name="ADC 128x Oversampling Switch" value="0" />
+  <ctl name="Aux Switch" value="0" />
+  <ctl name="MicN Switch" value="0" />
+  <ctl name="MicP Switch" value="0" />
+  <ctl name="Aux Volume" value="0" />
+  <ctl name="Mic Volume" value="0" />
+  <ctl name="Speaker Mixer PCM Playback Switch" value="0" />
+  <ctl name="Speaker Mixer Aux Playback Switch" value="0" />
+  <ctl name="Speaker Mixer Line Bypass Switch" value="0" />
 
   <path name="speaker">
-    <ctl name="Line Playback Switch" value="1" />
+    <ctl name="Speaker Mixer PCM Playback Switch" value="1" />
+    <ctl name="Speaker Playback Switch" value="1" />
   </path>
-
-  <path name="headphone">
-    <ctl name="HP Playback Switch" value="1" />
-  </path>
-
-
-  <path name="mic">
-    <ctl name="Left PGA Mixer Mic3L Switch" value="1" />
-    <ctl name="Right PGA Mixer Mic3R Switch" value="1" />
-   </path>
 </mixer>
