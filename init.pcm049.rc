@@ -18,6 +18,8 @@ on init
 
 # create real external storage
     export SECONDARY_STORAGE /storage/sdcard1
+    mkdir /mnt/media_rw 0700 media_rw media_rw
+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
     mkdir /storage/sdcard1 0000 system system
     mkdir /storage/udisk 0000 system system
 
@@ -75,8 +77,8 @@ on boot
 
 	# GPS ON-OFF
 	write /sys/class/gpio/export 172
-	write /sys/class/gpio/gpio172/value 0
 	write /sys/class/gpio/gpio172/direction out
+	write /sys/class/gpio/gpio172/value 0
 	chown gps system /sys/class/gpio/gpio172/value
 	chmod 0666 /sys/class/gpio/gpio172/value
 
@@ -88,8 +90,8 @@ on boot
 
 	# GPS NRESET
 	write /sys/class/gpio/export 174
-	write /sys/class/gpio/gpio174/value 1
 	write /sys/class/gpio/gpio174/direction out
+	write /sys/class/gpio/gpio174/value 1
 	chown gps system /sys/class/gpio/gpio174/value
 	chmod 0666 /sys/class/gpio/gpio174/value
 
@@ -168,6 +170,10 @@ service setup_fs /system/bin/setup_fs \
 # underlying files in /data/media will be created with user and group media_rw (1023)
 service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
     class main
+
+service fuse_sdcard1 /system/bin/sdcard /mnt/media_rw/sdcard1 /storage/sdcard1 1023 1023
+    class late_start
+    disabled
 
 service dhcpcd_eth0 /system/bin/dhcpcd -ABDKL
         class main

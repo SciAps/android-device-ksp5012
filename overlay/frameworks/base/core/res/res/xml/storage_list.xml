@@ -38,4 +38,10 @@
              android:primary="true"
              android:emulated="true"
              android:mtpReserve="100" />
+    <storage android:mountPoint="/storage/sdcard1"
+             android:storageDescription="@string/storage_sd_card"
+             android:removable="true" />
+    <storage android:mountPoint="/storage/udisk"
+             android:storageDescription="@string/storage_usb"
+             android:removable="true" />
 </StorageList>
