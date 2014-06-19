@@ -13,6 +13,7 @@
 ######################
 
 # automount external SD card
-dev_mount sdcard /storage/sdcard1 auto /devices/platform/omap_hsmmc.0/mmc_host/mmc0
-dev_mount usbdisk /storage/udisk auto /devices/platform/usbhs_omap/ehci-omap.0/usb1/1-1/1-1.1
+dev_mount	sdcard	/storage/sdcard1	auto	/devices/platform/omap_hsmmc.0/mmc_host/mmc0
+# automount USB drive
+dev_mount	usbdisk	/storage/udisk	auto	/devices/platform/usbhs_omap/ehci-omap.0/usb1/1-1/1-1:1.0
 
