@@ -3,25 +3,19 @@ import init.pcm049.wifi.rc
 
 on init
 # See storage config details at http://source.android.com/tech/storage/
-    mkdir /mnt/shell/emulated 0700 shell shell
-    mkdir /storage/emulated 0555 root root
+# Primay External Storage
+	mkdir /mnt/media_rw 0700 media_rw media_rw
+	mkdir /mnt/media_rw/sdcard0 0700 media_rw media_rw
+	mkdir /storage/sdcard0 0700 root root
 
-    export EXTERNAL_STORAGE /storage/emulated/legacy
-    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
-    export EMULATED_STORAGE_TARGET /storage/emulated
+	export EXTERNAL_STORAGE /storage/sdcard0
 
 # Support legacy paths
-    symlink /storage/emulated/legacy /sdcard
-    symlink /storage/emulated/legacy /mnt/sdcard
-    symlink /storage/emulated/legacy /storage/sdcard0
-    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+	symlink /storage/sdcard0 /sdcard
+	symlink /storage/sdcard0 /mnt/sdcard
 
-# create real external storage
-    export SECONDARY_STORAGE /storage/sdcard1
-    mkdir /mnt/media_rw 0700 media_rw media_rw
-    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
-    mkdir /storage/sdcard1 0000 system system
-    mkdir /storage/udisk 0000 system system
+# External USB mount point
+	mkdir /storage/udisk 0000 system system
 
 # Set the processor type for libEGL.  We set this to omap4430 even though we
 # may be running on an omap4460. Since they both have the same SGX, libEGL
@@ -165,15 +159,10 @@ service setup_fs /system/bin/setup_fs \
 	user bluetooth
 	group bluetooth net_bt_admin
 
-# create virtual SD card at /storage/sdcard0, based on the /data/media directory
-# daemon will drop to user/group system/media_rw after initializing
-# underlying files in /data/media will be created with user and group media_rw (1023)
-service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
-    class main
-
-service fuse_sdcard1 /system/bin/sdcard /mnt/media_rw/sdcard1 /storage/sdcard1 1023 1023
-    class late_start
-    disabled
+# create physical SD card at /storage/sdcard0
+service fuse_sdcard0 /system/bin/sdcard /mnt/media_rw/sdcard0 /storage/sdcard0 1023 1023
+	class late_start
+	disabled
 
 service dhcpcd_eth0 /system/bin/dhcpcd -ABDKL
         class main
