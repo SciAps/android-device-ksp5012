@@ -2,6 +2,10 @@ import init.pcm049.usb.rc
 import init.pcm049.wifi.rc
 
 on init
+# Mount system and data partitions
+	mount ubifs /dev/ubi0_1 /system ro
+	mount ubifs /dev/ubi0_2 /data rw nosuid nodev
+
 # See storage config details at http://source.android.com/tech/storage/
 # Primay External Storage
 	mkdir /mnt/media_rw 0700 media_rw media_rw
@@ -97,14 +101,8 @@ on fs
 	# Backlight
 	chown system system /sys/class/backlight/pwm-backlight/brightness
 
-	mkdir /factory 0775 radio radio
-	symlink /dev/block/platform /dev/block/platform/omap
-	mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/system /system wait ro
-        setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
-        mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/userdata /data wait noatime nosuid nodev nomblk_io_submit
-        mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/cache /cache wait noatime nosuid nodev nomblk_io_submit
-        mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/efs /factory wait ro
-        setprop ro.crypto.fuse_sdcard true
+	setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
+	setprop ro.crypto.fuse_sdcard true
 
 # H264 Encoder Profile setting
 # 1 - Base Profile
@@ -113,14 +111,7 @@ on fs
         setprop video.h264enc.profile 1
 
 # change permissions for ION driver
-    chmod 0777 /dev/ion
-
-# We chown/chmod /factory because mount is run as root + defaults
-        chown radio radio /factory
-        chmod 0775 /factory
-
-# add symlink for HDCP key
-        symlink /factory/hdcp.keys /system/vendor/firmware/hdcp.keys
+	chmod 0777 /dev/ion
 
 # change permissions for Sensors
 	chown system system /sys/bus/i2c/drivers/adxl34x/4-0053
@@ -128,7 +119,7 @@ on fs
 	chown system system /sys/bus/i2c/drivers/adxl34x/4-0053/rate
 
 # Change permissions on the governor (this is for debug only)
-    chmod 444 /proc/cmdline
+	chmod 444 /proc/cmdline
 
 # change permissions for S3D hardware
     chown system system /sys/devices/platform/omapdss/display0/s3d_enable
@@ -138,23 +129,14 @@ on fs
 # If you do not want the device to suspend to RAM, enable this write
 #	write /sys/power/wake_lock init.pcm049.rc_no_suspend
 
-service pvrsrvinit /vendor/bin/pvrsrvinit
+service pvrsrvinit /system/vendor/bin/pvrsrvinit
 	class core
 	user root
 	group root
 	oneshot
 
-# create filesystems if necessary
-service setup_fs /system/bin/setup_fs \
-                /dev/block/platform/omap/omap_hsmmc.1/by-name/cache \
-                /dev/block/platform/omap/omap_hsmmc.1/by-name/userdata
-        class core
-        user root
-        group root
-        oneshot
-
 #shared transport user space mgr service for Bluetooth, FM and GPS
-	service uim /system/bin/uim-sysfs
+service uim /system/bin/uim-sysfs
 	class core
 	user bluetooth
 	group bluetooth net_bt_admin
@@ -168,16 +150,3 @@ service dhcpcd_eth0 /system/bin/dhcpcd -ABDKL
         class main
         disabled
         oneshot
-
-# Texas Instruments Shared Memory Service
-service shm_service /system/bin/shm_service --no-fork
-        class core
-        user system
-        group system
-
-# Texas Instruments Augmented Reality X-celerator Daemon
-service arxd /system/bin/arxd
-        class main
-        user system
-        group drmrpc
-        ioprio rt 4

@@ -4,7 +4,6 @@
 # specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
 
-/dev/block/platform/omap/omap_hsmmc.0/by-name/system    /system             ext4      ro                                                    wait
-/dev/block/platform/omap/omap_hsmmc.0/by-name/cache     /cache              ext4      noatime,nosuid,nodev,nomblk_io_submit,errors=panic    wait
-/dev/block/platform/omap/omap_hsmmc.0/by-name/userdata  /data               ext4      noatime,nosuid,nodev,nomblk_io_submit,errors=panic    wait
+/dev/ubi0_1	/system	ubifs	ro
+/dev/ubi0_2	/data	ubifs	nosuid,nodev,errors=panic	wait
 
