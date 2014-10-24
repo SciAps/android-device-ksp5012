@@ -22,17 +22,20 @@ on init
 # does not care.
     setprop ro.product.processor omap4430
 
+# Allow everybody to read the xt_qtaguid resource tracking misc dev.
+# This is needed by any process that uses socket tagging.
+	chmod 0644 /dev/xt_qtaguid
+
 on post-fs-data
-        mkdir /data/media 0775 media_rw media_rw
-        chown media_rw media_rw /data/media
-        mkdir /data/misc/wifi 0770 wifi wifi
-        mkdir /data/misc/wifi/sockets 0770 wifi wifi
-        mkdir /data/misc/dhcp 0770 dhcp dhcp
-        chown dhcp dhcp /data/misc/dhcp
-        mkdir /data/misc/eth 0770 system system
-        chown system system /data/misc/eth
+	mkdir /data/media 0775 media_rw media_rw
+	chown media_rw media_rw /data/media
+	mkdir /data/misc/wifi 0770 wifi wifi
+	mkdir /data/misc/wifi/sockets 0770 wifi wifi
+	mkdir /data/misc/dhcp 0770 dhcp dhcp
+	chown dhcp dhcp /data/misc/dhcp
+	mkdir /data/misc/eth 0770 system system
+	chown system system /data/misc/eth
 	mkdir /data/misc/camera 0770 media media
-	setprop vold.post_fs_data_done 1
 
 # for Bluetooth HID
 	chmod 0666 /dev/uhid
@@ -43,12 +46,19 @@ on post-fs-data
 	chmod 0600 /dev/ttyO1
 	chown bluetooth bluetooth /dev/ttyO1
 
+	setprop vold.post_fs_data_done 1
+
 on boot
 	setprop lcd.landscape true
+	
 	mount debugfs /sys/kernel/debug /sys/kernel/debug
+# change permissions for ION driver
+	chmod 0777 /dev/ion
 	chmod 0666 /dev/pvrsrvkm
-	chmod 0444 /system/usr/keychars/omap4-keypad.kcm.bin
-	setprop ro.crypto.keyfile.userdata /dev/block/platform/omap/omap_hsmmc.1/by-name/crypto
+
+# change permissions for i2c-3 device
+	chmod 0660 /dev/i2c-3
+	chown media media /dev/i2c-3
 
 # cpufreq interactive governor: timer 20ms, min sample 20ms, hispeed 800MHz
         write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 20000
@@ -63,7 +73,7 @@ on boot
         write /sys/bus/usb/devices/usb1/power/autosuspend_delay_ms 0
         write /sys/bus/usb/devices/usb2/power/autosuspend_delay_ms 0
 
-	chmod 0777 /dev/ttyO3
+	chmod 0666 /dev/ttyO3
 
 # GPS init
 	chown gps system /dev/ttyO0
@@ -94,17 +104,11 @@ on boot
 	chmod 0770 /data/gps
 
 on fs
+	symlink /dev/block/platform /dev/block/platform/omap
+	mount_all /fstab.pcm049
+
 	# Backlight
 	chown system system /sys/class/backlight/pwm-backlight/brightness
-
-	mkdir /factory 0775 radio radio
-	symlink /dev/block/platform /dev/block/platform/omap
-	mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/system /system wait ro
-        setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
-        mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/userdata /data wait noatime nosuid nodev nomblk_io_submit
-        mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/cache /cache wait noatime nosuid nodev nomblk_io_submit
-        mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/efs /factory wait ro
-        setprop ro.crypto.fuse_sdcard true
 
 # H264 Encoder Profile setting
 # 1 - Base Profile
@@ -112,49 +116,25 @@ on fs
 # 8 - High Profile
         setprop video.h264enc.profile 1
 
-# change permissions for ION driver
-    chmod 0777 /dev/ion
-
-# We chown/chmod /factory because mount is run as root + defaults
-        chown radio radio /factory
-        chmod 0775 /factory
-
-# add symlink for HDCP key
-        symlink /factory/hdcp.keys /system/vendor/firmware/hdcp.keys
-
 # change permissions for Sensors
 	chown system system /sys/bus/i2c/drivers/adxl34x/4-0053
 	chown system system /sys/bus/i2c/drivers/adxl34x/4-0053/disable
 	chown system system /sys/bus/i2c/drivers/adxl34x/4-0053/rate
 
 # Change permissions on the governor (this is for debug only)
-    chmod 444 /proc/cmdline
-
-# change permissions for S3D hardware
-    chown system system /sys/devices/platform/omapdss/display0/s3d_enable
-    chown system system /sys/devices/platform/omapdss/display1/s3d_enable
-    chown system system /sys/devices/platform/omapdss/display1/s3d_type
+	chmod 444 /proc/cmdline
 
 # If you do not want the device to suspend to RAM, enable this write
 #	write /sys/power/wake_lock init.pcm049.rc_no_suspend
 
-service pvrsrvinit /vendor/bin/pvrsrvinit
+service pvrsrvinit /system/vendor/bin/pvrsrvinit
 	class core
 	user root
 	group root
 	oneshot
 
-# create filesystems if necessary
-service setup_fs /system/bin/setup_fs \
-                /dev/block/platform/omap/omap_hsmmc.1/by-name/cache \
-                /dev/block/platform/omap/omap_hsmmc.1/by-name/userdata
-        class core
-        user root
-        group root
-        oneshot
-
 #shared transport user space mgr service for Bluetooth, FM and GPS
-	service uim /system/bin/uim-sysfs
+service uim /system/bin/uim-sysfs
 	class core
 	user bluetooth
 	group bluetooth net_bt_admin
@@ -165,19 +145,7 @@ service fuse_sdcard0 /system/bin/sdcard /mnt/media_rw/sdcard0 /storage/sdcard0 1
 	disabled
 
 service dhcpcd_eth0 /system/bin/dhcpcd -ABDKL
-        class main
-        disabled
-        oneshot
+	class main
+	disabled
+	oneshot
 
-# Texas Instruments Shared Memory Service
-service shm_service /system/bin/shm_service --no-fork
-        class core
-        user system
-        group system
-
-# Texas Instruments Augmented Reality X-celerator Daemon
-service arxd /system/bin/arxd
-        class main
-        user system
-        group drmrpc
-        ioprio rt 4

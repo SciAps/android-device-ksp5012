@@ -17,6 +17,7 @@
 include device/phytec/pcm049/Config.mk
 
 PRODUCT_COPY_FILES := \
+	device/phytec/pcm049/init.rc:root/init.rc \
 	device/phytec/pcm049/init.pcm049.rc:root/init.pcm049.rc \
 	device/phytec/pcm049/init.pcm049.usb.rc:root/init.pcm049.usb.rc \
 	device/phytec/pcm049/init.pcm049.wifi.rc:root/init.pcm049.wifi.rc \
@@ -34,12 +35,11 @@ PRODUCT_COPY_FILES := \
 	device/phytec/pcm049/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
 	device/phytec/pcm049/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
         device/phytec/pcm049/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-	device/phytec/pcm049/omap4-keypad.kl:system/usr/keylayout/omap4-keypad.kl \
 	device/phytec/pcm049/omap4-keypad.kcm:system/usr/keychars/omap4-keypad.kcm \
         device/phytec/pcm049/ft5x06_ts.idc:system/usr/idc/ft5x06_ts.idc \
         device/common/gps/gps.conf_US:system/etc/gps.conf \
 	device/phytec/pcm049/audio/audio_policy.conf:system/etc/audio_policy.conf \
-        #device/phytec/pcm049/twl6030_pwrbutton.kl:system/usr/keylayout/twl6030_pwrbutton.kl \
+	device/phytec/pcm049/twl6030_pwrbutton.kl:system/usr/keylayout/twl6030_pwrbutton.kl
 
 # to mount the external storage (sdcard)
 PRODUCT_COPY_FILES += \
@@ -51,7 +51,7 @@ PRODUCT_PACKAGES += \
 #Sensors - Accelerometer
 PRODUCT_PACKAGES += \
 	sensors.pcm049 \
-	sensor.test \
+	sensor.test
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -59,34 +59,48 @@ PRODUCT_PACKAGES += \
         LiveWallpapersPicker \
         MagicSmokeWallpapers \
         VisualizationWallpapers \
-        librs_jni \
+        librs_jni
 
 PRODUCT_PACKAGES += \
-    ti_omap4_ducati_bins
+	ti_omap4_ducati_bins
 #    libOMX_Core \
 #    libOMX.TI.DUCATI1.VIDEO.DECODER
 
 # Tiler
 PRODUCT_PACKAGES += \
-    libtimemmgr
+	libtimemmgr
 
 # Camera
 ifdef OMAP_ENHANCEMENT_CPCAM
 PRODUCT_PACKAGES += \
-    libcpcam_jni \
-    com.ti.omap.android.cpcam
+	libcpcam_jni \
+	com.ti.omap.android.cpcam
 
 PRODUCT_COPY_FILES += \
-    hardware/ti/omap4xxx/cpcam/com.ti.omap.android.cpcam.xml:system/etc/permissions/com.ti.omap.android.cpcam.xml
+	hardware/ti/omap4xxx/cpcam/com.ti.omap.android.cpcam.xml:system/etc/permissions/com.ti.omap.android.cpcam.xml
 endif
 
 PRODUCT_PACKAGES += \
-    CameraOMAP \
-    Camera \
-    camera_test
+	CameraOMAP \
+	Camera \
+	camera_test
 
 PRODUCT_PROPERTY_OVERRIDES := \
-        hwui.render_dirty_regions=false
+ 	ro.hwui.disable_scissor_opt=true \
+	ro.hwui.drop_shadow_cache_size=1 \
+	ro.hwui.gradient_cache_size=0.5 \
+	ro.hwui.layer_cache_size=4 \
+	ro.hwui.patch_cache_size=64 \
+	ro.hwui.path_cache_size=1 \
+	ro.hwui.r_buffer_cache_size=1 \
+	ro.hwui.shape_cache_size=0.5 \
+	ro.hwui.text_large_cache_height=512 \
+	ro.hwui.text_large_cache_width=2048 \
+	ro.hwui.text_small_cache_height=256 \
+	ro.hwui.text_small_cache_width=1024 \
+	ro.hwui.texture_cache_flushrate=0.4 \
+	ro.hwui.texture_cache_size=12 \
+	debug.hwui.render_dirty_regions=false
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
         persist.sys.usb.config=mtp
@@ -103,7 +117,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	wifi.interface=wlan0 \
-	hwui.render_dirty_regions=false
 
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
@@ -112,7 +125,7 @@ DEVICE_PACKAGE_OVERLAYS := \
 
 #HWC Hal
 PRODUCT_PACKAGES += \
-    hwcomposer.omap4
+	hwcomposer.omap4
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
@@ -164,8 +177,19 @@ PRODUCT_PACKAGES += \
 DUCATI_TGZ := device/ti/proprietary-open/omap4/ducati_blaze_tablet.tgz
 PRODUCT_PACKAGES += ducati-m3-core0.xem3
 
+PRODUCT_PROPERTY_OVERRIDES += \
+	dalvik.vm.heapstartsize=5m \
+	dalvik.vm.heapgrowthlimit=72m \
+	dalvik.vm.heapsize=192m \
+	dalvik.vm.heaptargetutilization=0.75 \
+	dalvik.vm.heapminfree=512k \
+	dalvik.vm.heapmaxfree=2m \
+	dalvik.vm.jit.codecachesize=0
+	persist.sys.dalvik.vm.lib=libdvm.so
+	dalvik.vm.dexopt-flags=m=y
+
 $(call inherit-product-if-exists, vendor/sciaps/device.mk)
-$(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
+#$(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 $(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product-if-exists, device/ti/proprietary-open/omap4/ti-omap4-vendor.mk)
 $(call inherit-product-if-exists, vendor/ti/proprietary/omap4/ti-omap4-vendor.mk)
@@ -175,5 +199,5 @@ $(call inherit-product-if-exists, device/ti/proprietary-open/wl12xx/wlan/wl12xx-
 #$(call inherit-product-if-exists, device/ti/common-open/s3d/s3d-products.mk)
 #$(call inherit-product-if-exists, device/ti/proprietary-open/omap4/ducati-full_blaze.mk)
 #$(call inherit-product-if-exists, device/ti/proprietary-open/omap4/dsp_fw.mk)
-$(call inherit-product-if-exists, hardware/ti/dvp/dvp-products.mk)
-$(call inherit-product-if-exists, hardware/ti/arx/arx-products.mk)
+#$(call inherit-product-if-exists, hardware/ti/dvp/dvp-products.mk)
+#$(call inherit-product-if-exists, hardware/ti/arx/arx-products.mk)
